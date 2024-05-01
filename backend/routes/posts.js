@@ -1,3 +1,14 @@
+/*
+*   There are API related to posts
+*   --->>   Route is api/posts  <<---
+*   1. Create Post : Req - POST
+*   2. Update Post : Req - PUT
+*   3. Delete Post : Req - DELETE
+*   4. Get all Posts : Req - GET
+*   5. Get A Post Detial : Req - GET
+*   6. Get All Posts of a PARTICULAR USER : Req - GET
+*/
+
 const express=require('express')
 const router=express.Router()
 const User=require('../models/User')
@@ -7,28 +18,26 @@ const Comment=require('../models/Comment')
 const verifyToken = require('../verifyToken')
 
 //CREATE
-router.post("/create",verifyToken,async (req,res)=>{
+// router.post("/create",verifyToken,async (req,res)=>{
+router.post("/create",async (req,res)=>{    
     try{
         const newPost=new Post(req.body)
         // console.log(req.body)
         const savedPost=await newPost.save()
-        
         res.status(200).json(savedPost)
     }
     catch(err){
-        
         res.status(500).json(err)
     }
-     
 })
 
+
 //UPDATE
-router.put("/:id",verifyToken,async (req,res)=>{
+// router.put("/:id",verifyToken,async (req,res)=>{
+router.put("/:id",async (req,res)=>{
     try{
-       
         const updatedPost=await Post.findByIdAndUpdate(req.params.id,{$set:req.body},{new:true})
         res.status(200).json(updatedPost)
-
     }
     catch(err){
         res.status(500).json(err)
@@ -37,7 +46,8 @@ router.put("/:id",verifyToken,async (req,res)=>{
 
 
 //DELETE
-router.delete("/:id",verifyToken,async (req,res)=>{
+// router.delete("/:id",verifyToken,async (req,res)=>{
+router.delete("/:id",async (req,res)=>{
     try{
         await Post.findByIdAndDelete(req.params.id)
         await Comment.deleteMany({postId:req.params.id})
@@ -87,7 +97,5 @@ router.get("/user/:userId",async (req,res)=>{
         res.status(500).json(err)
     }
 })
-
-
 
 module.exports=router
