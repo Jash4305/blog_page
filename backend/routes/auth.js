@@ -44,8 +44,6 @@ router.post("/login", async (req, res) => {
 });
 
 
-
-
 //LOGOUT
 router.get("/logout",async (req,res)=>{
     try{
@@ -66,6 +64,5 @@ router.get("/refetch", (req,res)=>{
         res.status(200).json(data)
     })
 })
-
 
 module.exports=router

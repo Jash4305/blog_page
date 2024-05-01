@@ -8,7 +8,8 @@ const verifyToken = require('../verifyToken')
 
 
 //UPDATE
-router.put("/:id",verifyToken,async (req,res)=>{
+// router.put("/:id",verifyToken,async (req,res)=>{
+router.put("/:id",async (req,res)=>{    
     try{
         if(req.body.password){
             const salt=await bcrypt.genSalt(10)
@@ -16,7 +17,6 @@ router.put("/:id",verifyToken,async (req,res)=>{
         }
         const updatedUser=await User.findByIdAndUpdate(req.params.id,{$set:req.body},{new:true})
         res.status(200).json(updatedUser)
-
     }
     catch(err){
         res.status(500).json(err)
@@ -25,13 +25,13 @@ router.put("/:id",verifyToken,async (req,res)=>{
 
 
 //DELETE
-router.delete("/:id",verifyToken,async (req,res)=>{
+// router.delete("/:id",verifyToken,async (req,res)=>{
+router.delete("/:id",async (req,res)=>{
     try{
         await User.findByIdAndDelete(req.params.id)
         await Post.deleteMany({userId:req.params.id})
         await Comment.deleteMany({userId:req.params.id})
-        res.status(200).json("User has been deleted!")
-
+        res.status(200).json("User has left BLOG PAGE!")
     }
     catch(err){
         res.status(500).json(err)
